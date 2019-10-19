@@ -1,4 +1,4 @@
-const rule = require('../../../lib/rules/enforce-unique-ids');
+const rule = require('../../../src/rules/enforce-unique-ids');
 const RuleTester = require('eslint').RuleTester;
 
 RuleTester.setDefaultConfig({

@@ -1,4 +1,4 @@
-const rule = require('../../../lib/rules/enforce-ids-on-form-element');
+const rule = require('../../../src/rules/enforce-ids-on-form-element');
 const RuleTester = require('eslint').RuleTester;
 
 RuleTester.setDefaultConfig({
