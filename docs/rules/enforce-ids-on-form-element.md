@@ -1,4 +1,4 @@
-# Form elements must have an id (enforce-ids-on-form-element)
+# Form elements must have an id (ids-on-form-elements)
 
 Please describe the origin of the rule here.
 

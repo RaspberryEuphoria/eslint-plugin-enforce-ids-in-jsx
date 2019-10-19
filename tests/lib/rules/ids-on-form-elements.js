@@ -1,4 +1,4 @@
-const rule = require('../../../src/rules/enforce-ids-on-form-element');
+const rule = require('../../../src/rules/ids-on-form-elements');
 const RuleTester = require('eslint').RuleTester;
 
 RuleTester.setDefaultConfig({
@@ -14,7 +14,7 @@ const ERROR_MSG_MISSING_ID = 'Form elements must have an id attribute.';
 
 const ruleTester = new RuleTester();
 
-ruleTester.run('enforce-ids-on-form-element', rule, {
+ruleTester.run('ids-on-form-elements', rule, {
     valid: [
         {
             code: '<button id="awesomeButton"></button>',

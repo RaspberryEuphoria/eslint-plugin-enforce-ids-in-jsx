@@ -1,4 +1,4 @@
-const rule = require('../../../src/rules/enforce-unique-ids');
+const rule = require('../../../src/rules/unique-ids');
 const RuleTester = require('eslint').RuleTester;
 
 RuleTester.setDefaultConfig({
@@ -14,7 +14,7 @@ const ERROR_MSG_DUPLICATE_ID = "You can't use the same id more than once.";
 
 const ruleTester = new RuleTester();
 
-ruleTester.run('enforce-unique-ids', rule, {
+ruleTester.run('unique-ids', rule, {
     valid: [
         {
             code:
