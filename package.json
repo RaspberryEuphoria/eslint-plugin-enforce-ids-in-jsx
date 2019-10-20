@@ -11,7 +11,7 @@
   "main": "lib/index.js",
   "scripts": {
     "prepublish": "babel src -d lib",
-    "test": "mocha tests --recursive --require @babel/register"
+    "test": "nyc --reporter=html mocha tests --recursive --require @babel/register"
   },
   "dependencies": {
     "requireindex": "~1.1.0"
@@ -32,7 +32,8 @@
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-prettier": "^3.1.1",
     "mocha": "^3.1.2",
-    "prettier": "^1.18.2"
+    "prettier": "^1.18.2",
+    "nyc": "^14.1.1"
   },
   "engines": {
     "node": ">=0.10.0"
