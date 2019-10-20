@@ -10,7 +10,7 @@ RuleTester.setDefaultConfig({
     },
 });
 
-const ERROR_MSG_DUPLICATE_ID = "You can't use the same id more than once.";
+const ERROR_MSG_DUPLICATE_ID = `The id value [ {{ value }} ] must be unique.`;
 
 const ruleTester = new RuleTester();
 
@@ -27,8 +27,11 @@ ruleTester.run('unique-ids', rule, {
                 '<div><button id="awesomeButton"></button><button id="awesomeButton"></button></div>',
             errors: [
                 {
-                    message: ERROR_MSG_DUPLICATE_ID,
+                    messageId: 'uniqueId',
                     type: 'JSXOpeningElement',
+                    data: {
+                        idAttributeValue: 'awesomeButton',
+                    },
                 },
             ],
         },

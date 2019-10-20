@@ -19,9 +19,11 @@ module.exports = {
         schema: [
             // fill in your schema
         ],
+        messages: {
+            uniqueId: 'The id value [ {{ idAttributeValue }} ] must be unique.',
+        },
     },
     create(context) {
-        const ERROR_MSG_DUPLICATE_ID = "You can't use the same id more than once.";
         const usedIds = [];
 
         return {
@@ -39,7 +41,10 @@ module.exports = {
                 } else {
                     context.report({
                         node,
-                        message: ERROR_MSG_DUPLICATE_ID,
+                        messageId: 'uniqueId',
+                        data: {
+                            idAttributeValue,
+                        },
                     });
                 }
             },

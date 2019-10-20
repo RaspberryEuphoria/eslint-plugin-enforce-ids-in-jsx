@@ -19,9 +19,12 @@ module.exports = {
         schema: [
             // fill in your schema
         ],
+        messages: {
+            missingId:
+                'Form elements must have an id attribute. Suggestion: use [ {{ suggestionsText }} ].',
+        },
     },
     create(context) {
-        const ERROR_MSG_MISSING_ID = 'Form elements must have an id attribute.';
         const formElements = ['button', 'input', 'select', 'textarea', 'option'];
         const capitalizeWord = word => word[0].toUpperCase() + word.substring(1);
 
@@ -41,11 +44,11 @@ module.exports = {
 
                 if (!idAttributeValue) {
                     const nameAttributeValue = node.attributes.find(
-                        attribute => attribute.name.name === 'name',
+                        ({ name }) => name.name === 'name',
                     )?.value?.value;
 
                     const typeAttributeValue = node.attributes.find(
-                        attribute => attribute.name.name === 'type',
+                        ({ name }) => name.name === 'type',
                     )?.value?.value;
 
                     const suggestions = [];
@@ -64,13 +67,12 @@ module.exports = {
                         .map((suggestion, i) => (i === 0 ? suggestion : capitalizeWord(suggestion)))
                         .join('');
 
-                    const message = suggestions.length
-                        ? `${ERROR_MSG_MISSING_ID} Suggestion: use "${suggestionsText}".`
-                        : ERROR_MSG_MISSING_ID;
-
                     context.report({
                         node,
-                        message,
+                        messageId: 'missingId',
+                        data: {
+                            suggestionsText,
+                        },
                     });
                 }
             },

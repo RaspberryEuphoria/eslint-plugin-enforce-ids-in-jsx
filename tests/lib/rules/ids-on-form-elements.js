@@ -34,8 +34,11 @@ ruleTester.run('ids-on-form-elements', rule, {
             code: '<button></button>',
             errors: [
                 {
-                    message: ERROR_MSG_MISSING_ID + ' Suggestion: use "button".',
+                    messageId: 'missingId',
                     type: 'JSXOpeningElement',
+                    data: {
+                        suggestionsText: 'button',
+                    },
                 },
             ],
         },
@@ -43,8 +46,11 @@ ruleTester.run('ids-on-form-elements', rule, {
             code: '<button name="submit"></button>',
             errors: [
                 {
-                    message: ERROR_MSG_MISSING_ID + ' Suggestion: use "submitButton".',
+                    messageId: 'missingId',
                     type: 'JSXOpeningElement',
+                    data: {
+                        suggestionsText: 'submitButton',
+                    },
                 },
             ],
         },
@@ -52,8 +58,11 @@ ruleTester.run('ids-on-form-elements', rule, {
             code: '<input name="firstName" />',
             errors: [
                 {
-                    message: ERROR_MSG_MISSING_ID + ' Suggestion: use "firstNameInput".',
+                    messageId: 'missingId',
                     type: 'JSXOpeningElement',
+                    data: {
+                        suggestionsText: 'firstNameInput',
+                    },
                 },
             ],
         },
@@ -61,8 +70,11 @@ ruleTester.run('ids-on-form-elements', rule, {
             code: '<input name="firstName" type="text" />',
             errors: [
                 {
-                    message: ERROR_MSG_MISSING_ID + ' Suggestion: use "firstNameTextInput".',
+                    messageId: 'missingId',
                     type: 'JSXOpeningElement',
+                    data: {
+                        suggestionsText: 'firstNameTextInput',
+                    },
                 },
             ],
         },
