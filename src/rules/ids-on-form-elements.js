@@ -51,6 +51,8 @@ module.exports = {
                         ({ name }) => name.name === 'type',
                     )?.value?.value;
 
+                    // Push order matters for the output!
+                    // The output for `<foo type="bar" name="baz" />` should be nameTypeNode, ie. `bazBarFoo`
                     const suggestions = [];
 
                     if (nameAttributeValue) {

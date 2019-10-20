@@ -17,6 +17,9 @@ const ruleTester = new RuleTester();
 ruleTester.run('ids-on-form-elements', rule, {
     valid: [
         {
+            code: '<div>This is not a form element, id is optional</div>',
+        },
+        {
             code: '<button id="awesomeButton"></button>',
         },
         {
