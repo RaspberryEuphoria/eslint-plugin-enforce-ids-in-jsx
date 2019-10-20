@@ -10,8 +10,6 @@ RuleTester.setDefaultConfig({
     },
 });
 
-const ERROR_MSG_MISSING_ID = 'Form elements must have an id attribute.';
-
 const ruleTester = new RuleTester();
 
 ruleTester.run('ids-on-form-elements', rule, {
