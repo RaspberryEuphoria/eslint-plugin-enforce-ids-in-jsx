@@ -15,7 +15,7 @@ module.exports = {
             category: 'Fill me in',
             recommended: false,
         },
-        fixable: null, // or "code" or "whitespace"
+        fixable: 'code', // or "code" or "whitespace"
         schema: [
             // fill in your schema
         ],
@@ -30,6 +30,7 @@ module.exports = {
 
         return {
             JSXOpeningElement(node) {
+                const sourceCode = context.getSourceCode();
                 const nodeType = node.name.name;
 
                 if (!formElements.includes(nodeType)) {
@@ -74,6 +75,14 @@ module.exports = {
                         messageId: 'missingId',
                         data: {
                             suggestionsText,
+                        },
+                        fix(fixer) {
+                            const [start, end] = sourceCode.getLastToken(node).range;
+
+                            return fixer.insertTextAfterRange(
+                                [start - 1, end - 1],
+                                ` id="${suggestionsText}"`,
+                            );
                         },
                     });
                 }
