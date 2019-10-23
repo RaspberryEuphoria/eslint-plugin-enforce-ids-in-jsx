@@ -8,56 +8,75 @@
 // Rule Definition
 //------------------------------------------------------------------------------
 
+const { DEFAULT_TARGET_CONFIG } = require('../constants');
+const { capitalizeWord, getAttribute, getAttributeValue } = require('../helpers');
+
+const formElements = ['button', 'input', 'select', 'textarea', 'option'];
+const materialElements = ['TextField'];
+
 module.exports = {
     meta: {
-        docs: {
-            description: 'Form elements must have an id',
-            category: 'Fill me in',
-            recommended: false,
-        },
-        fixable: 'code', // or "code" or "whitespace"
+        type: 'suggestion',
+        fixable: 'code',
         schema: [
-            // fill in your schema
+            {
+                enum: ['all', 'form', 'material', 'formAndMaterial'],
+            },
         ],
         messages: {
             missingId:
-                'Form elements must have an id attribute. Suggestion: use [ {{ suggestionsText }} ].',
+                'Form elements must have an id attribute. Suggestion: use [ `{{ suggestionsText }}` ].',
         },
     },
     create(context) {
-        const formElements = ['button', 'input', 'select', 'textarea', 'option'];
-        const capitalizeWord = word => word[0].toUpperCase() + word.substring(1);
+        const targetConfig = context.options[0] || DEFAULT_TARGET_CONFIG;
 
         return {
             JSXOpeningElement(node) {
-                const sourceCode = context.getSourceCode();
+                const getNodeAttribute = attrName => getAttribute(node, attrName);
                 const nodeType = node.name.name;
 
-                if (!formElements.includes(nodeType)) {
-                    return;
+                if (targetConfig !== 'all') {
+                    let isNodeTargeted = false;
+
+                    switch (targetConfig) {
+                        case 'form':
+                            isNodeTargeted = formElements.includes(nodeType);
+                            break;
+                        case 'material':
+                            isNodeTargeted = materialElements.includes(nodeType);
+                            break;
+                        default:
+                            isNodeTargeted = [...formElements, ...materialElements].includes(
+                                nodeType,
+                            );
+                    }
+
+                    if (!isNodeTargeted) {
+                        return;
+                    }
                 }
 
-                const idAttribute = node.attributes.find(({ name }) => name.name === 'id');
-                const idAttributeValue =
-                    idAttribute?.value?.value ||
-                    idAttribute?.value?.expression?.name ||
-                    idAttribute?.value?.expression?.value;
+                const idAttribute = getNodeAttribute('id');
 
-                if (!idAttributeValue) {
-                    const nameAttributeValue = node.attributes.find(
-                        ({ name }) => name.name === 'name',
-                    )?.value?.value;
+                if (!getAttributeValue(idAttribute)) {
+                    const nameAttribute = getNodeAttribute('name');
+                    const nameAttributeValue = getAttributeValue(nameAttribute);
 
-                    const typeAttributeValue = node.attributes.find(
-                        ({ name }) => name.name === 'type',
-                    )?.value?.value;
+                    const typeAttribute = getNodeAttribute('type');
+                    const typeAttributeValue = getAttributeValue(typeAttribute);
 
-                    // Push order matters for the output!
-                    // The output for `<foo type="bar" name="baz" />` should be nameTypeNode, ie. `bazBarFoo`
                     const suggestions = [];
 
                     if (nameAttributeValue) {
                         suggestions.push(nameAttributeValue);
+                    } else {
+                        const keyAttribute = getNodeAttribute('key');
+                        const keyAttributeValue = getAttributeValue(keyAttribute);
+
+                        if (keyAttributeValue) {
+                            suggestions.push(keyAttributeValue);
+                        }
                     }
 
                     if (typeAttributeValue) {
@@ -77,11 +96,12 @@ module.exports = {
                             suggestionsText,
                         },
                         fix(fixer) {
-                            const [start, end] = sourceCode.getLastToken(node).range;
+                            const start = node.start + nodeType.length;
+                            const end = start + 1;
 
                             return fixer.insertTextAfterRange(
-                                [start - 1, end - 1],
-                                ` id="${suggestionsText}"`,
+                                [start, end],
+                                ' id={`' + suggestionsText + '`}',
                             );
                         },
                     });
