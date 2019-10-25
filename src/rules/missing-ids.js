@@ -41,7 +41,7 @@ module.exports = {
         ],
         messages: {
             missingId:
-                'Missing "id" attribute for {{ nodeType }}. Quick fix it with: `{{ suggestionsText }}`',
+                'Missing "id" attribute for {{ nodeType }}. Quick fix suggestion: `{{ suggestionsText }}`',
         },
     },
     create(context) {

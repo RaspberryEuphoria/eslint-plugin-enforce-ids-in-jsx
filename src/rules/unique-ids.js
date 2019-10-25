@@ -28,7 +28,7 @@ module.exports = {
 
         return {
             JSXOpeningElement(node) {
-                const idAttribute = node.attributes.find(({ name }) => name.name === 'id');
+                const idAttribute = node.attributes.find(({ name }) => name?.name === 'id');
                 const idAttributeValue =
                     idAttribute?.value?.value || idAttribute?.value?.expression?.value;
 
