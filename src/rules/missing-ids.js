@@ -8,7 +8,11 @@
 // Rule Definition
 //------------------------------------------------------------------------------
 
-const { DEFAULT_TARGET_CONFIG } = require('../constants');
+const {
+    DEFAULT_TARGET_OPTION,
+    DEFAULT_TARGET_CUSTOM_OPTION,
+    DEFAULT_PRIORITY_OVER_SPREAD_OPTION,
+} = require('../constants');
 const { capitalizeWord, getAttribute, getAttributeValue } = require('../helpers');
 
 const formElements = ['button', 'input', 'select', 'textarea', 'option'];
@@ -34,39 +38,74 @@ module.exports = {
     meta: {
         type: 'suggestion',
         fixable: 'code',
-        schema: [
-            {
-                enum: ['all', 'form', 'material', 'formAndMaterial'],
+        schema: {
+            items: {
+                type: 'object',
+                properties: {
+                    target: {
+                        type: 'array',
+                        items: { enum: ['all', 'form', 'material', 'none'] },
+                        minItems: 1,
+                        uniqueItems: true,
+                        additionalItems: false,
+                    },
+                    targetCustom: {
+                        type: 'array',
+                        minItems: 1,
+                        uniqueItems: true,
+                        additionalItems: false,
+                    },
+                    priorityOverSpread: { type: 'boolean' },
+                },
+                additionalProperties: false,
             },
-        ],
+        },
         messages: {
             missingId:
                 'Missing "id" attribute for {{ nodeType }}. Quick fix suggestion: `{{ suggestionsText }}`',
         },
     },
     create(context) {
-        const targetConfig = context.options[0] || DEFAULT_TARGET_CONFIG;
+        const options = context.options[0];
+        const target = options?.target || DEFAULT_TARGET_OPTION;
+        const targetCustom = options?.targetCustom || DEFAULT_TARGET_CUSTOM_OPTION;
+        const priorityOverSpread =
+            options?.priorityOverSpread !== undefined
+                ? options?.priorityOverSpread
+                : DEFAULT_PRIORITY_OVER_SPREAD_OPTION;
 
         return {
             JSXOpeningElement(node) {
                 const getNodeAttribute = attrName => getAttribute(node, attrName);
                 const nodeType = node.name.name;
+                const spreadAttributes = node.attributes.find(
+                    ({ type }) => type === 'JSXSpreadAttribute',
+                );
 
-                if (targetConfig !== 'all') {
+                if (!priorityOverSpread && spreadAttributes) {
+                    return;
+                }
+
+                if (!target.includes('all')) {
                     let isNodeTargeted = false;
 
-                    switch (targetConfig) {
-                        case 'form':
-                            isNodeTargeted = formElements.includes(nodeType);
-                            break;
-                        case 'material':
-                            isNodeTargeted = materialElements.includes(nodeType);
-                            break;
-                        default:
-                            isNodeTargeted = [...formElements, ...materialElements].includes(
-                                nodeType,
-                            );
-                    }
+                    const targetElements = {
+                        form: formElements,
+                        material: materialElements,
+                    };
+
+                    const finalTarget = target.includes('none')
+                        ? targetCustom
+                        : [...target, ...targetCustom];
+
+                    finalTarget.some(value => {
+                        if (
+                            (targetElements[value] && targetElements[value].includes(nodeType)) ||
+                            value.includes(nodeType)
+                        ) {
+                            isNodeTargeted = true;
+                        }
+                    });
 
                     if (!isNodeTargeted) {
                         return;
@@ -106,8 +145,13 @@ module.exports = {
                             nodeType,
                         },
                         fix(fixer) {
-                            const start = node.start + nodeType.length;
-                            const end = start + 1;
+                            let start = node.start + nodeType.length;
+                            let end = start + 1;
+
+                            if (spreadAttributes) {
+                                start = spreadAttributes.start;
+                                end = spreadAttributes.end + 1;
+                            }
 
                             return fixer.insertTextAfterRange(
                                 [start, end],

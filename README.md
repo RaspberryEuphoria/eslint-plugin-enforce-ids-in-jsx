@@ -43,19 +43,30 @@ Add `enforce-ids-in-jsx` to the plugins section of your `.eslintrc` configuratio
 ```
 
 
-Then configure the rules you want to use under the rules section. This readme provides an [exhaustive list](#supported-rules) with details and config options for each rules.
+Then configure the rules you want to use under the rules section.
 
 ```json
 {
     "rules": {
-        "enforce-ids-in-jsx/rule-name": 2
+        "enforce-ids-in-jsx/missing-ids": 2,
+        "enforce-ids-in-jsx/unique-ids": 2,
     }
 }
 ```
 
+The names `"missing-ids"` and `"unique-ids"` are the names of [rules](#supported-rules) in ESLint. The first value is the error level of the rule and can be one of these values:
+
+* `"off"` or `0` - turn the rule off
+* `"warn"` or `1` - turn the rule on as a warning (doesn't affect exit code)
+* `"error"` or `2` - turn the rule on as an error (exit code will be 1)
+
+If you're using a linter in your CI process, you may want to set the error level to `1` for some time to prevent your pipeline from breaking immediatly.
+
+The second value is an optional object to set options on the rule.
+
 ## <a name="supported-rules"></a> Supported Rules
 
-- **missing-ids**: This rule will trigger when a form element is missing an `id` attribute.
+- **missing-ids**: This rule will trigger when an element is missing an `id` attribute. By default, it will only target form elements, but you can adjust the options to target any element you need (React components included).
 
     > Why? This ensures that every form element in your layout can be identified easily.
 
@@ -69,8 +80,34 @@ Then configure the rules you want to use under the rules section. This readme pr
     <button type="submit" id="submitButton">Submit me!</button>
     ```
 
-    Using the auto-fix feature will add an `id` based on the type of element (ie. input, button, select...), and on the `type` and `name` attributes if possible.
+    Using the auto-fix feature will add an `id` based on the type of element (ie. input, button, select...), and on the `type` and `name` attributes if possible.  
 
+    Options for this rule are:
+
+    * `"target"`, an array that take values from this list: `all`, `form`, `material`, `none`. Default to `['form']`
+    * * `all`: will trigger the rule on EVERY element
+    * * `form`: will trigger the rule on basic form elements
+    * * `material`: will trigger the rule on these Material components: "NativeSelect", "Select", "MenuItem", "Button", "IconButton", "Checkbox", "Radio", "Slider", "Switch", "TextField", "Input", "OutlinedInput", "Modal"
+    * * `none`: will prevent the rule to trigger on any element except those defined in the second option, `customTarget`. Be careful, if `none` is defined in the `target` array, it will override the rest of the values!
+    * `targetCustom`, an array that take any value you want (basic html elements, custom components, etc). Default to `[]`
+    * `priorityOverSpread`, a boolean. If set to false, the rule won't trigger on any element where there is a spread operator. It may be useful in case you're already using `{...rest}` to pass ids and don't want eslint to warn you about false-positives. Default to `true`
+
+    Examples of configuration:
+    ```javascript
+        "enforce-ids-in-jsx/missing-ids": ['error', {
+            target: ['form', 'material'],
+            targetCustom: ['AddressField', 'CustomCheckbox', 'MoviesListContainer'],
+            priorityOverSpread: false,
+        }],
+    ```
+
+    ```javascript
+        "enforce-ids-in-jsx/missing-ids": ['warning', {
+            target: ['none'],
+            targetCustom: ['ul', 'ol', 'header', 'footer', 'section'],
+            priorityOverSpread: false,
+        }],
+    ```
 - **unique-ids**: This rule will trigger when a form element is using an `id` already set on a previous element.
 
     > Why? This ensures that every element as an unique id and can't be confused with another element.
