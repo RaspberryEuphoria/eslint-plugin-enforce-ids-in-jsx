@@ -1,5 +1,5 @@
 /**
- * Capitalize a word by makeing the first letter uppercase
+ * Capitalize a word by making the first letter uppercase
  *
  * @param {String} word The worde to capitalize
  * @returns {String} The capitalized word
@@ -45,6 +45,6 @@ export const getAttributeValue = attr => {
     return (
         attr?.value?.value ||
         attr?.value?.expression?.value ||
-        attr?.value?.expression?.quasis?.value
+        attr?.value?.expression?.quasis?.[0]?.value?.raw
     );
 };
