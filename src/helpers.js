@@ -14,7 +14,7 @@ export const capitalizeWord = word => word[0].toUpperCase() + word.substring(1);
  * @returns {Object} The attribute
  */
 export const getAttribute = (node, attrName) =>
-    node.attributes.find(({ name }) => name.name === attrName);
+    node.attributes.find(attr => attr?.name?.name === attrName);
 
 /**
  * Get an attribute value
