@@ -12,7 +12,23 @@ const { DEFAULT_TARGET_CONFIG } = require('../constants');
 const { capitalizeWord, getAttribute, getAttributeValue } = require('../helpers');
 
 const formElements = ['button', 'input', 'select', 'textarea', 'option'];
-const materialElements = ['TextField'];
+const materialElements = [
+    // Form Elements
+    'NativeSelect',
+    'Select',
+    'MenuItem',
+    'Button',
+    'IconButton',
+    'Checkbox',
+    'Radio',
+    'Slider',
+    'Switch',
+    'TextField',
+    'Input',
+    'OutlinedInput',
+    // Layout elements
+    'Modal',
+];
 
 module.exports = {
     meta: {
@@ -25,7 +41,7 @@ module.exports = {
         ],
         messages: {
             missingId:
-                'Form elements must have an id attribute. Suggestion: use [ `{{ suggestionsText }}` ].',
+                'Missing id attribute on {{ nodeType }}. Quick fix it with: `{{ suggestionsText }}`',
         },
     },
     create(context) {
@@ -94,6 +110,7 @@ module.exports = {
                         messageId: 'missingId',
                         data: {
                             suggestionsText,
+                            nodeType,
                         },
                         fix(fixer) {
                             const start = node.start + nodeType.length;

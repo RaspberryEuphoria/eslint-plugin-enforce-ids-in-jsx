@@ -38,6 +38,7 @@ ruleTester.run('ids-on-form-elements', rule, {
                     messageId: 'missingId',
                     type: 'JSXOpeningElement',
                     data: {
+                        nodeType: 'button',
                         suggestionsText: 'button',
                     },
                 },
@@ -50,6 +51,7 @@ ruleTester.run('ids-on-form-elements', rule, {
                     messageId: 'missingId',
                     type: 'JSXOpeningElement',
                     data: {
+                        nodeType: 'button',
                         suggestionsText: 'submitButton',
                     },
                 },
@@ -62,6 +64,7 @@ ruleTester.run('ids-on-form-elements', rule, {
                     messageId: 'missingId',
                     type: 'JSXOpeningElement',
                     data: {
+                        nodeType: 'input',
                         suggestionsText: 'firstNameInput',
                     },
                 },
@@ -74,6 +77,7 @@ ruleTester.run('ids-on-form-elements', rule, {
                     messageId: 'missingId',
                     type: 'JSXOpeningElement',
                     data: {
+                        nodeType: 'input',
                         suggestionsText: 'firstNameTextInput',
                     },
                 },

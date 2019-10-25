@@ -20,7 +20,7 @@ module.exports = {
             // fill in your schema
         ],
         messages: {
-            uniqueId: 'The id value [ {{ idAttributeValue }} ] must be unique.',
+            uniqueId: 'The id value {{ idAttributeValue }} must be unique.',
         },
     },
     create(context) {

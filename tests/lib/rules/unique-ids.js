@@ -10,8 +10,6 @@ RuleTester.setDefaultConfig({
     },
 });
 
-const ERROR_MSG_DUPLICATE_ID = `The id value [ {{ value }} ] must be unique.`;
-
 const ruleTester = new RuleTester();
 
 ruleTester.run('unique-ids', rule, {
