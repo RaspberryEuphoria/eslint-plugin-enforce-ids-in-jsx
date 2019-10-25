@@ -32,8 +32,9 @@ export const getAttributeValue = attr => {
     */
     if (attr?.value?.expression?.name || attr?.value?.expression?.expressions?.[0]?.name) {
         return (
-            '${' + attr?.value?.expression?.name ||
-            attr?.value?.expression?.expressions?.[0]?.name + '}'
+            '${' +
+            (attr?.value?.expression?.name || attr?.value?.expression?.expressions?.[0]?.name) +
+            '}'
         );
     }
 
