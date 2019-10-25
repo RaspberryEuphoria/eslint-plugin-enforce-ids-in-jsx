@@ -43,7 +43,7 @@ Add `enforce-ids-in-jsx` to the plugins section of your `.eslintrc` configuratio
 ```
 
 
-Then configure the rules you want to use under the rules section.
+Then configure the rules you want to use under the rules section. This readme provides an [exhaustive list](#supported-rules) with details and config options for each rules.
 
 ```json
 {
@@ -55,7 +55,7 @@ Then configure the rules you want to use under the rules section.
 
 ## <a name="supported-rules"></a> Supported Rules
 
-- **ids-on-form-elements**: This rule will trigger when a form element is missing an `id` attribute.
+- **missing-ids**: This rule will trigger when a form element is missing an `id` attribute.
 
     > Why? This ensures that every form element in your layout can be identified easily.
 
@@ -69,7 +69,7 @@ Then configure the rules you want to use under the rules section.
     <button type="submit" id="submitButton">Submit me!</button>
     ```
 
-    [Not implemented yet] Using the auto-fix feature will add an `id` based on the type of element (ie. input, button, select...), and on the `type` and `name` attributes if possible.
+    Using the auto-fix feature will add an `id` based on the type of element (ie. input, button, select...), and on the `type` and `name` attributes if possible.
 
 - **unique-ids**: This rule will trigger when a form element is using an `id` already set on a previous element.
 

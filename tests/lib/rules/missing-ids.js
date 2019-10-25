@@ -1,4 +1,4 @@
-const rule = require('../../../src/rules/ids-on-form-elements');
+const rule = require('../../../src/rules/missing-ids');
 const RuleTester = require('eslint').RuleTester;
 
 RuleTester.setDefaultConfig({
@@ -12,7 +12,7 @@ RuleTester.setDefaultConfig({
 
 const ruleTester = new RuleTester();
 
-ruleTester.run('ids-on-form-elements', rule, {
+ruleTester.run('missing-ids', rule, {
     valid: [
         {
             code: '<div>This is not a form element, id is optional</div>',

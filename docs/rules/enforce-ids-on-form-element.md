@@ -1,4 +1,4 @@
-# Form elements must have an id (ids-on-form-elements)
+# Form elements must have an id (missing-ids)
 
 Please describe the origin of the rule here.
 

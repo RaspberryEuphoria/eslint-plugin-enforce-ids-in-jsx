@@ -41,7 +41,7 @@ module.exports = {
         ],
         messages: {
             missingId:
-                'Missing id attribute on {{ nodeType }}. Quick fix it with: `{{ suggestionsText }}`',
+                'Missing "id" attribute for {{ nodeType }}. Quick fix it with: `{{ suggestionsText }}`',
         },
     },
     create(context) {
@@ -86,13 +86,6 @@ module.exports = {
 
                     if (nameAttributeValue) {
                         suggestions.push(nameAttributeValue);
-                    } else {
-                        const keyAttribute = getNodeAttribute('key');
-                        const keyAttributeValue = getAttributeValue(keyAttribute);
-
-                        if (keyAttributeValue) {
-                            suggestions.push(keyAttributeValue);
-                        }
                     }
 
                     if (typeAttributeValue) {
