@@ -18,20 +18,22 @@ ruleTester.run('missing-ids', rule, {
             code: '<div>This is not a form element, id is optional</div>',
         },
         {
-            code: '<button id="awesomeButton"></button>',
+            code:
+                '<div id="awesomeWrapper">This is not a form element, but id is still required because of targetCustom option</div>',
+            options: [{ targetCustom: ['div'] }],
         },
         {
-            code: '<button></button>',
+            code: '<button id="awesomeButton">Click me!</button>',
+        },
+        {
+            code: "<button>Click me, I don't need an id!</button>",
             options: [{ target: ['none'] }],
         },
         {
-            code: '<button name="submit" id="submitButton"></button>',
+            code: '<input id="firstNameInput" />',
         },
         {
-            code: '<input name="firstName" id="firstNameInput" />',
-        },
-        {
-            code: '<input name="firstName" type="text" id="firstNameInput" />',
+            code: '<input id={"firstNameInput"} />',
         },
         {
             code: '<input name={name} type="checkbox" id={`${name}`} />',
