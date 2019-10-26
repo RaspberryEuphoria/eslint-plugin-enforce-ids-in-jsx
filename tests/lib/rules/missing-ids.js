@@ -21,6 +21,10 @@ ruleTester.run('missing-ids', rule, {
             code: '<button id="awesomeButton"></button>',
         },
         {
+            code: '<button></button>',
+            options: [{ target: ['none'] }],
+        },
+        {
             code: '<button name="submit" id="submitButton"></button>',
         },
         {
@@ -29,8 +33,64 @@ ruleTester.run('missing-ids', rule, {
         {
             code: '<input name="firstName" type="text" id="firstNameInput" />',
         },
+        {
+            code: '<input name={name} type="checkbox" id={`${name}`} />',
+        },
+        {
+            code: '<input name={name} type={type} id={`${name}${type}`} />',
+        },
+        {
+            code:
+                "<input name={`${main || 'Main'}${name || 'firstName'}`} type={type} id={`${main || 'Main'}${name || 'firstName'}${type}`} />",
+        },
+        {
+            code: '<input type="text" {...rest} />',
+            options: [{ priorityOverSpread: false }],
+        },
+        {
+            code: '<select name="bestStarWarsMovie" id="bestStarWarsMovieSelect"></select>',
+            options: [{ target: ['material'] }],
+        },
+        {
+            code: '<select name="bestStarWarsMovie" id="bestStarWarsMovieSelect"></select>',
+            options: [{ target: ['none'], targetCustom: ['select'] }],
+        },
+        {
+            code: '<PaymentField id="moneyMaker" />',
+            options: [{ targetCustom: ['PaymentField'] }],
+        },
     ],
     invalid: [
+        {
+            code:
+                '<div>This is not a form element, but id is still required because of targetCustom option</div>',
+            options: [{ targetCustom: ['div'] }],
+            errors: [
+                {
+                    messageId: 'missingId',
+                    type: 'JSXOpeningElement',
+                    data: {
+                        nodeType: 'div',
+                        suggestionsText: 'div',
+                    },
+                },
+            ],
+        },
+        {
+            code:
+                '<div>This is not a form element, but id is still required because of targetCustom option</div>',
+            options: [{ target: ['all'] }],
+            errors: [
+                {
+                    messageId: 'missingId',
+                    type: 'JSXOpeningElement',
+                    data: {
+                        nodeType: 'div',
+                        suggestionsText: 'div',
+                    },
+                },
+            ],
+        },
         {
             code: '<button></button>',
             errors: [
@@ -79,6 +139,71 @@ ruleTester.run('missing-ids', rule, {
                     data: {
                         nodeType: 'input',
                         suggestionsText: 'firstNameTextInput',
+                    },
+                },
+            ],
+        },
+        {
+            code: '<input name="gender" type="radio" />',
+            errors: [
+                {
+                    messageId: 'missingId',
+                    type: 'JSXOpeningElement',
+                    data: {
+                        nodeType: 'input',
+                        suggestionsText: 'genderRadioInput',
+                    },
+                },
+            ],
+        },
+        {
+            code: '<input name={name} type={type} />',
+            errors: [
+                {
+                    messageId: 'missingId',
+                    type: 'JSXOpeningElement',
+                    data: {
+                        nodeType: 'input',
+                        suggestionsText: '${name}${type}Input',
+                    },
+                },
+            ],
+        },
+        {
+            code: '<input label={label} type={type} />',
+            errors: [
+                {
+                    messageId: 'missingId',
+                    type: 'JSXOpeningElement',
+                    data: {
+                        nodeType: 'input',
+                        suggestionsText: '${label}${type}Input',
+                    },
+                },
+            ],
+        },
+        {
+            code: "<input name={`${main || 'Main'}${name || 'firstName'}`} type={type} />",
+            errors: [
+                {
+                    messageId: 'missingId',
+                    type: 'JSXOpeningElement',
+                    data: {
+                        nodeType: 'input',
+                        suggestionsText: '${main || Main}${name || firstName}${type}Input',
+                    },
+                },
+            ],
+        },
+        {
+            code: '<input type="text" {...rest} />',
+            errors: [
+                {
+                    messageId: 'missingId',
+                    type: 'JSXOpeningElement',
+                    data: {
+                        nodeType: 'input',
+                        suggestionsText: 'textInput',
                     },
                 },
             ],

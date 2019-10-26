@@ -53,7 +53,6 @@ module.exports = {
                         type: 'array',
                         minItems: 1,
                         uniqueItems: true,
-                        additionalItems: false,
                     },
                     priorityOverSpread: { type: 'boolean' },
                 },
@@ -121,10 +120,15 @@ module.exports = {
                     const typeAttribute = getNodeAttribute('type');
                     const typeAttributeValue = getAttributeValue(typeAttribute);
 
+                    const labelAttribute = getNodeAttribute('label');
+                    const labelAttributeValue = getAttributeValue(labelAttribute);
+
                     const suggestions = [];
 
                     if (nameAttributeValue) {
                         suggestions.push(nameAttributeValue);
+                    } else if (labelAttributeValue) {
+                        suggestions.push(labelAttributeValue);
                     }
 
                     if (typeAttributeValue) {

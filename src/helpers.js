@@ -25,17 +25,32 @@ export const getAttribute = (node, attrName) =>
  * @returns {String} The attribute value
  */
 export const getAttributeValue = attr => {
-    /* 
-        This is either an identifier or an identifier inside a template:
-        <input attr={foo} /> or
-        <input attr={`${foo}`} />
-    */
-    if (attr?.value?.expression?.name || attr?.value?.expression?.expressions?.[0]?.name) {
-        return (
-            '${' +
-            (attr?.value?.expression?.name || attr?.value?.expression?.expressions?.[0]?.name) +
-            '}'
-        );
+    // This is an identifier: <input attr={foo} />
+    if (attr?.value?.expression?.name) {
+        return '${' + attr.value.expression.name + '}';
+    }
+
+    // This is an identifier inside a template: <input attr={`${foo}`} />
+    if (attr?.value?.expression?.expressions?.length) {
+        const expressions = attr.value.expression.expressions
+            .map(expression => {
+                if (expression.type === 'Identifier') {
+                    return '${' + expression.name + '}';
+                } else if (expression.type === 'LogicalExpression') {
+                    return (
+                        '${' +
+                        (expression.left.name || expression.left.value) +
+                        ' ' +
+                        expression.operator +
+                        ' ' +
+                        (expression.right.name || expression.right.value) +
+                        '}'
+                    );
+                }
+            })
+            .join('');
+
+        return expressions;
     }
 
     /*
