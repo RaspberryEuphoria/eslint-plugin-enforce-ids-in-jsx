@@ -1,6 +1,6 @@
 {
   "name": "eslint-plugin-enforce-ids-in-jsx",
-  "version": "0.0.2",
+  "version": "1.0.0",
   "description": "A small collection of ESLint rules to improve usage of id attributes in your markup.",
   "keywords": [
     "eslint",
