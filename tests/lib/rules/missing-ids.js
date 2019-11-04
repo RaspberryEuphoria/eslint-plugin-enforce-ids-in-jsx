@@ -73,7 +73,7 @@ ruleTester.run('missing-ids', rule, {
                     type: 'JSXOpeningElement',
                     data: {
                         nodeType: 'div',
-                        suggestionsText: 'div',
+                        suggestionsText: '',
                     },
                 },
             ],
@@ -88,7 +88,7 @@ ruleTester.run('missing-ids', rule, {
                     type: 'JSXOpeningElement',
                     data: {
                         nodeType: 'div',
-                        suggestionsText: 'div',
+                        suggestionsText: '',
                     },
                 },
             ],
@@ -101,7 +101,7 @@ ruleTester.run('missing-ids', rule, {
                     type: 'JSXOpeningElement',
                     data: {
                         nodeType: 'button',
-                        suggestionsText: 'button',
+                        suggestionsText: '',
                     },
                 },
             ],
@@ -114,7 +114,7 @@ ruleTester.run('missing-ids', rule, {
                     type: 'JSXOpeningElement',
                     data: {
                         nodeType: 'button',
-                        suggestionsText: 'submitButton',
+                        suggestionsText: '',
                     },
                 },
             ],
@@ -127,7 +127,7 @@ ruleTester.run('missing-ids', rule, {
                     type: 'JSXOpeningElement',
                     data: {
                         nodeType: 'input',
-                        suggestionsText: 'firstNameInput',
+                        suggestionsText: '',
                     },
                 },
             ],
@@ -140,7 +140,7 @@ ruleTester.run('missing-ids', rule, {
                     type: 'JSXOpeningElement',
                     data: {
                         nodeType: 'input',
-                        suggestionsText: 'firstNameTextInput',
+                        suggestionsText: '',
                     },
                 },
             ],
@@ -153,7 +153,7 @@ ruleTester.run('missing-ids', rule, {
                     type: 'JSXOpeningElement',
                     data: {
                         nodeType: 'input',
-                        suggestionsText: 'genderRadioInput',
+                        suggestionsText: '',
                     },
                 },
             ],
@@ -166,7 +166,7 @@ ruleTester.run('missing-ids', rule, {
                     type: 'JSXOpeningElement',
                     data: {
                         nodeType: 'input',
-                        suggestionsText: '${name}${type}Input',
+                        suggestionsText: '',
                     },
                 },
             ],
@@ -179,7 +179,7 @@ ruleTester.run('missing-ids', rule, {
                     type: 'JSXOpeningElement',
                     data: {
                         nodeType: 'input',
-                        suggestionsText: '${label}${type}Input',
+                        suggestionsText: '',
                     },
                 },
             ],
@@ -192,7 +192,7 @@ ruleTester.run('missing-ids', rule, {
                     type: 'JSXOpeningElement',
                     data: {
                         nodeType: 'input',
-                        suggestionsText: '${main || Main}${name || firstName}${type}Input',
+                        suggestionsText: '',
                     },
                 },
             ],
@@ -205,7 +205,7 @@ ruleTester.run('missing-ids', rule, {
                     type: 'JSXOpeningElement',
                     data: {
                         nodeType: 'input',
-                        suggestionsText: 'textInput',
+                        suggestionsText: '',
                     },
                 },
             ],

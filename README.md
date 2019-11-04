@@ -90,6 +90,7 @@ The second value is an optional object to set options on the rule.
     * * `material`: will trigger the rule on these Material components: "NativeSelect", "Select", "MenuItem", "Button", "IconButton", "Checkbox", "Radio", "Slider", "Switch", "TextField", "Input", "OutlinedInput", "Modal"
     * * `none`: will prevent the rule to trigger on any element except those defined in the second option, `customTarget`. Be careful, if `none` is defined in the `target` array, it will override the rest of the values!
     * `targetCustom`, an array that take any value you want (basic html elements, custom components, etc). Default to `[]`
+    * `suggestionsEnabled`, a boolean. If set to true, the rule will provide a suggestion for an `id` and enable the auto-fix feature. **This is still experimental!**. Default to `false`
     * `priorityOverSpread`, a boolean. If set to false, the rule won't trigger on any element where there is a spread operator. It may be useful in case you're already using `{...rest}` to pass ids and don't want eslint to warn you about false-positives. Default to `true`
 
     Examples of configuration:

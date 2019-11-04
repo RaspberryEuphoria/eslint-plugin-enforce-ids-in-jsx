@@ -12,6 +12,7 @@ const {
     DEFAULT_TARGET_OPTION,
     DEFAULT_TARGET_CUSTOM_OPTION,
     DEFAULT_PRIORITY_OVER_SPREAD_OPTION,
+    DEFAULT_SUGGESTIONS_ENABLED,
 } = require('../constants');
 const { capitalizeWord, getAttribute, getAttributeValue } = require('../helpers');
 
@@ -54,14 +55,14 @@ module.exports = {
                         minItems: 1,
                         uniqueItems: true,
                     },
+                    suggestionsEnabled: { type: 'boolean' },
                     priorityOverSpread: { type: 'boolean' },
                 },
                 additionalProperties: false,
             },
         },
         messages: {
-            missingId:
-                'Missing "id" attribute for {{ nodeType }}. Quick fix suggestion: `{{ suggestionsText }}`',
+            missingId: 'Missing "id" attribute for {{ nodeType }}{{ suggestionsText }}',
         },
     },
     create(context) {
@@ -72,6 +73,7 @@ module.exports = {
             options?.priorityOverSpread !== undefined
                 ? options?.priorityOverSpread
                 : DEFAULT_PRIORITY_OVER_SPREAD_OPTION;
+        const suggestionsEnabled = options?.suggestionsEnabled || DEFAULT_SUGGESTIONS_ENABLED;
 
         return {
             JSXOpeningElement(node) {
@@ -114,32 +116,40 @@ module.exports = {
                 const idAttribute = getNodeAttribute('id');
 
                 if (!getAttributeValue(idAttribute)) {
-                    const nameAttribute = getNodeAttribute('name');
-                    const nameAttributeValue = getAttributeValue(nameAttribute);
-
-                    const typeAttribute = getNodeAttribute('type');
-                    const typeAttributeValue = getAttributeValue(typeAttribute);
-
-                    const labelAttribute = getNodeAttribute('label');
-                    const labelAttributeValue = getAttributeValue(labelAttribute);
-
                     const suggestions = [];
 
-                    if (nameAttributeValue) {
-                        suggestions.push(nameAttributeValue);
-                    } else if (labelAttributeValue) {
-                        suggestions.push(labelAttributeValue);
+                    if (suggestionsEnabled) {
+                        const nameAttribute = getNodeAttribute('name');
+                        const nameAttributeValue = getAttributeValue(nameAttribute);
+
+                        const typeAttribute = getNodeAttribute('type');
+                        const typeAttributeValue = getAttributeValue(typeAttribute);
+
+                        const labelAttribute = getNodeAttribute('label');
+                        const labelAttributeValue = getAttributeValue(labelAttribute);
+
+                        if (nameAttributeValue) {
+                            suggestions.push(nameAttributeValue);
+                        } else if (labelAttributeValue) {
+                            suggestions.push(labelAttributeValue);
+                        }
+
+                        if (typeAttributeValue) {
+                            suggestions.push(typeAttributeValue);
+                        }
+
+                        suggestions.push(nodeType);
                     }
 
-                    if (typeAttributeValue) {
-                        suggestions.push(typeAttributeValue);
-                    }
-
-                    suggestions.push(nodeType);
-
-                    const suggestionsText = suggestions
-                        .map((suggestion, i) => (i === 0 ? suggestion : capitalizeWord(suggestion)))
-                        .join('');
+                    const suggestionsText = suggestionsEnabled
+                        ? ' Quick fix suggestion: `' +
+                          suggestions
+                              .map((suggestion, i) =>
+                                  i === 0 ? suggestion : capitalizeWord(suggestion),
+                              )
+                              .join('') +
+                          '`'
+                        : '';
 
                     context.report({
                         node,
@@ -149,6 +159,10 @@ module.exports = {
                             nodeType,
                         },
                         fix(fixer) {
+                            if (!suggestionsEnabled) {
+                                return;
+                            }
+
                             let start = node.start + nodeType.length;
                             let end = start + 1;
 

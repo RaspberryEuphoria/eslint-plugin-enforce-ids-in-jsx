@@ -8,6 +8,8 @@
 // Rule Definition
 //------------------------------------------------------------------------------
 
+const { getAttribute, getAttributeValue } = require('../helpers');
+
 module.exports = {
     meta: {
         docs: {
@@ -28,9 +30,10 @@ module.exports = {
 
         return {
             JSXOpeningElement(node) {
-                const idAttribute = node.attributes.find(({ name }) => name?.name === 'id');
-                const idAttributeValue =
-                    idAttribute?.value?.value || idAttribute?.value?.expression?.value;
+                const getNodeAttribute = attrName => getAttribute(node, attrName);
+
+                const idAttribute = getNodeAttribute('id');
+                const idAttributeValue = getAttributeValue(idAttribute);
 
                 if (!idAttributeValue) {
                     return;
